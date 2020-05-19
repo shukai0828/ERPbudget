@@ -17,7 +17,7 @@ public class Main {
         // 构建详细数据
         buildRoleExpense();
         // 构建角色顺序
-        loadRoleList("D:/ProjectGithub/ERPbudget_data/m5_roles_utf8.csv");
+        loadRoleList("D:/ProjectGithub/ERPbudget_data/m5_roles_gbk.csv");
         // 打印统计结果，csv格式
         printResult("D:/ProjectGithub/ERPbudget_data/result.csv");
     }
@@ -26,7 +26,8 @@ public class Main {
     {
         try
         {
-            BufferedReader in = new BufferedReader(new FileReader("D:/ProjectGithub/ERPbudget_data/m5_projects_utf8.csv"));
+            FileInputStream fileInputStream = new FileInputStream("D:/ProjectGithub/ERPbudget_data/m5_projects_gbk.csv");
+            BufferedReader in = new BufferedReader(new InputStreamReader(fileInputStream, "GBK"));
             String contentLine;
             // 第一行为配置行
             in.readLine();
@@ -47,7 +48,8 @@ public class Main {
     {
         try
         {
-            BufferedReader in = new BufferedReader(new FileReader("D:/ProjectGithub/ERPbudget_data/m5_utf8.csv"));
+            FileInputStream fileInputStream = new FileInputStream("D:/ProjectGithub/ERPbudget_data/m5_gbk.csv");
+            BufferedReader in = new BufferedReader(new InputStreamReader(fileInputStream, "GBK"));
             String contentLine;
             // 第一行为配置行
             in.readLine();
@@ -86,7 +88,8 @@ public class Main {
     {
         try
         {
-            BufferedReader in = new BufferedReader(new FileReader(roleConfigFile));
+            FileInputStream fileInputStream = new FileInputStream(roleConfigFile);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fileInputStream, "GBK"));
             String roleConfigLine;
             roleConfigLine = in.readLine();
             roleList = roleConfigLine.split(",");
@@ -101,11 +104,9 @@ public class Main {
     {
         try
         {
-            File file = new File(resultFile);
-            // 创建文件
-            file.createNewFile();
-            // creates a FileWriter Object
-            FileWriter writer = new FileWriter(file);
+            FileOutputStream fileOutputStream = new FileOutputStream(resultFile);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream, "GBK"));
+
             // 按项目写入各角色工作量投入
             for (Map.Entry<String, Project> entry : projectMap.entrySet())
             {
