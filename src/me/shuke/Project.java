@@ -1,6 +1,7 @@
 package me.shuke;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Project {
@@ -14,7 +15,7 @@ public class Project {
         ID = id;
         this.name = name;
 
-        roleExpense = new HashMap<>();
+        roleExpense = new LinkedHashMap<>();
     }
 
     public void addRoleDay(String roleName)

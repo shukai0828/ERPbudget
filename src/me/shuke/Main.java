@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        projectMap = new HashMap<>();
+        projectMap = new LinkedHashMap<>();
         roleList = new String[0];
         // 构建项目信息列表
         setupProject();
