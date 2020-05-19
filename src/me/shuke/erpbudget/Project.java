@@ -1,4 +1,4 @@
-package me.shuke;
+package me.shuke.erpbudget;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

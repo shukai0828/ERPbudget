@@ -1,7 +1,32 @@
-package me.shuke;
+package me.shuke.erpbudget;
 
 import java.io.*;
 import java.util.*;
+
+/**
+ * 根据石墨文档的工时记录格式和统计格式按项目、角色计算投入人数，支持一位小数，四舍五入。
+ *
+ * 石墨文档参考：为隐私考虑，这里不记录了。
+ *
+ * 统计算法：
+ *     1. 统计时，不在项目列表中的记录去除，不参与人日数叠加
+ *     2. 每个项目/每个角色的平均人头数计算公式为：当前项目和角色人日数 / 全部项目角色平均人日数
+ *     3. “全部项目角色平均人日数” 的计算方式为：全部有效人日数 / 全部人数
+ *         这个计算有一定的误差，周末加班、休假、不合法的项目ID不统计在"全部有效人日数"中，会导致该值偏低。
+ *
+ * 预处理过程：
+ *     1. 从石墨上导出excel文件，并另存为csv文件
+ *     2. 修剪数据，去除干扰
+ *
+ * 处理过程：
+ *     1. 从项目列表文件中加载项目ID和项目名称
+ *     2. 从明细文件中循环处理，累加项目/角色的人日数
+ *     3. 从角色定义文件中获取角色列表和展示顺序
+ *     4. 将统计结果按照格式要求输出，过程中进行实际人数计算
+ *
+ * @author shukai0828
+ * @date  2020/5/19
+ */
 
 public class Main {
 
@@ -26,6 +51,12 @@ public class Main {
         printResult("D:/ProjectGithub/ERPbudget_data/result.csv", "GBK");
     }
 
+    /**
+     * 根据项目集列表构建初始项目结构
+     *
+     * @param projectsFile 文件地址
+     * @param charsetName 文件的编码格式
+     */
     private static void setupProject(String projectsFile, String charsetName)
     {
         try
@@ -48,6 +79,12 @@ public class Main {
         }
     }
 
+    /**
+     * 遍历指定的明细工时统计文件，统计分项目、角色人日数，以及总人数和总人日数
+     *
+     * @param dataFile 明细文件地址
+     * @param charsetName 文件的编码格式
+     */
     private static void buildRoleExpense(String dataFile, String charsetName)
     {
         try
@@ -90,6 +127,12 @@ public class Main {
         }
     }
 
+    /**
+     * 读取角色配置文件，其顺序就是展示顺序
+     *
+     * @param roleConfigFile 角色配置文件地址
+     * @param charsetName 文件编码格式
+     */
     public static void loadRoleList(String roleConfigFile, String charsetName)
     {
         try
@@ -106,6 +149,12 @@ public class Main {
         }
     }
 
+    /**
+     * 输出符合基本要求的统计结果
+     *
+     * @param resultFile 输出文件目标地址
+     * @param charsetName 输出时的字符集
+     */
     public static void printResult(String resultFile, String charsetName)
     {
         try
